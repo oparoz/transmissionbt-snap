@@ -8,6 +8,10 @@ Download and share files using [transmissionbt](https://transmissionbt.com/) on 
 
 A good hardware companion for this Snap is the [Nextcloud Box](https://nextcloud.com/box) which comes with a 1TB hard drive and Nextcloud, a next-generation Files, Sync and Share solution.
 
+## Authors
+
+* [Olivier Paroz](https://github.com/oparoz)
+
 ## Compilation
 
 *Prerequisite: You need to have both snapcraft and snapd installed. See https://snapcraft.io*
@@ -25,7 +29,7 @@ $ sudo snapcraft
 
 Install it locally
 
-`$ sudo snap install transmissionbt_1.0.0oparoz_amd64.snap --force-dangerous --devmode`
+`$ sudo snap install transmissionbt_1.0.1oparoz_amd64.snap --force-dangerous --devmode`
 
 *Note: Replace the filename with the one which has been generated*
 
@@ -82,3 +86,61 @@ Files still being downloaded can be found here:
 
 `/var/snap/transmissionbt/common/incomplete`
 
+## Creating torrents
+
+Create the torrent
+
+```
+$ sudo transmissionbt.transmission-create -o ~/torrents/transmissionbt_1.0.1oparoz_amd64.snap.torrent -c "transmissionbt Snap for Ubuntu Snappy" -t udp://tracker.openbittorrent.com:80 -t udp://open.demonii.com:1337 -t udp://tracker.coppersurfer.tk:6969 -t udp://tracker.leechers-paradise.org:6969 ~/sharing/transmissionbt_1.0.1oparoz_amd64.snap
+```
+
+### Explanations
+
+Torrent to create, including the full path to its location
+
+`-o ~/torrents/transmissionbt_1.0.1oparoz_amd64.snap.torrent`
+
+Comments you want to add to the file
+
+`-c "transmissionbt Snap for Ubuntu Snappy"`
+
+As many trackers as you want. Use more than one for redundancy
+
+```
+-t udp://tracker.openbittorrent.com:80
+-t udp://open.demonii.com:1337
+-t udp://tracker.coppersurfer.tk:6969
+-t udp://tracker.leechers-paradise.org:6969
+```
+
+File or directory to share
+
+`~/sharing/transmissionbt_1.0.1oparoz_amd64.snap`
+
+## Seeding
+
+Copy both the files/folder to your transmission download folder
+
+```
+$ sudo cp ~/downloads/transmissionbt_1.0.1oparoz_amd64.snap /var/snap/transmissionbt/common/downloads/
+```
+
+Send the torrent file to transmission
+
+*Note: Authentication is required when using transmission-remote. The default login/password are transmission/transmission*
+
+```
+$ sudo transmissionbt.transmission-remote -n 'transmission:transmission' -a ~/torrents/transmissionbt_1.0.1oparoz_amd64.snap.torrent
+localhost:9091/transmission/rpc/ responded: "success"
+```
+
+## Monitoring
+
+List all torrents
+
+```
+$ sudo transmissionbt.transmission-remote -n 'transmission:transmission' -l
+ID     Done       Have  ETA           Up    Down  Ratio  Status       Name
+   1   100%   11.47 MB  Done         0.0     0.0    0.0  Idle         transmissionbt_1.0.1oparoz_amd64.snap
+Sum:          11.47 MB               0.0     0.0
+```
