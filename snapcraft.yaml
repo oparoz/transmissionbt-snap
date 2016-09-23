@@ -42,6 +42,7 @@ parts:
     build-packages:
       - autoconf
       - libcurl4-openssl-dev
+      - libssl-dev
       - libglib2.0-dev
       - libevent-dev
       - libminiupnpc-dev
