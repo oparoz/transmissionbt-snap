@@ -70,6 +70,15 @@ You can find the script here:
 
 `/var/snap/transmissionbt/current/transmission/blocklists.sh`
 
+Once you've updated the blocklist, simply restart the service
+
+`$ sudo systemctl restart snap.transmissionbt.transmission-daemon`
+
+*Note: It takes a while as your blocklists will need to be downloaded and unpacked*
+
+Go to the web interface, click on the "wrench" button (bottom left), go to the "Peers" tab.
+You should see a high number of rules.
+
 ## Files location
 
 Place your torrents files here:
