@@ -1,5 +1,5 @@
 name: transmissionbt
-version: 1.0.0oparoz
+version: 1.0.1oparoz
 summary: Download and share using torrents with transmissionbt
 description: Download and share files using transmissionbt Bittorrent application on Ubuntu Snappy. Has to be run in devmode
 grade: devel
@@ -22,11 +22,18 @@ apps:
   # Some tools
   wget:
     command: wget
-    plugs: [network, network-bind]
+    plugs: [network]
 
   p7zip:
     command: p7zip
-    plugs: [network, network-bind]
+
+  transmission-remote:
+    command: transmission-remote
+    plugs: [network]
+
+  transmission-create:
+    command: transmission-create
+    plugs: [network]
 
 parts:
   transmission:
