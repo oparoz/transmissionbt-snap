@@ -1,0 +1,20 @@
+{
+    "download-limit": 100,
+    "download-limit-enabled": false,
+    "encryption": 2,
+    "max-peers-global": 200,
+    "peer-port": 45678,
+    "peer-port-random-on-start": true,
+    "peer-socket-tos": "lowcost",
+    "pex-enabled": true,
+    "port-forwarding-enabled": true,
+    "rpc-authentication-required": true,
+    "rpc-password": "transmission",
+    "rpc-port": 9091,
+    "rpc-username": "transmission",
+    "rpc-whitelist": "127.0.0.1,192.168.*.*,10.0.*.*",
+    "trash-original-torrent-files": true,
+    "umask": 7,
+    "upload-limit": 100,
+    "upload-limit-enabled": false
+}

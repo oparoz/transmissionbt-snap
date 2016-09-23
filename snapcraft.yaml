@@ -1,0 +1,81 @@
+name: transmissionbt
+version: 1.0.0oparoz
+summary: Download and share using torrents with transmissionbt
+description: Download and share files using transmissionbt Bittorrent application on Ubuntu Snappy. Has to be run in devmode
+grade: devel
+confinement: devmode
+
+apps:
+  # Transmission daemon
+  transmission-daemon:
+    command: transmission-init start
+    stop-command: transmission-init stop
+    daemon: forking
+    plugs: [network, network-bind, mount-observe]
+
+  # mDNS daemon
+  mdns-publisher:
+    command: delay-on-failure mdns-publisher transmission
+    daemon: simple
+    plugs: [network, network-bind]
+
+  # Some tools
+  wget:
+    command: wget
+    plugs: [network, network-bind]
+
+  p7zip:
+    command: p7zip
+    plugs: [network, network-bind]
+
+parts:
+  transmission:
+    plugin: autotools
+    source: https://github.com/transmission/transmission-releases/raw/master/transmission-2.92.tar.xz
+    source-type: tar
+    configflags:
+      - --without-gtk
+      - --disable-mac
+      - --disable-nls
+      - --disable-cli
+      - --enable-inotify
+    build-packages:
+      - autoconf
+      - libcurl4-openssl-dev
+      - libglib2.0-dev
+      - libevent-dev
+      - libminiupnpc-dev
+      - libminiupnpc10
+      - libappindicator-dev
+
+  transmission-customizations:
+    plugin: dump
+    source: src/transmission/customizations
+    organize:
+      settings.json: transmission/
+      blocklists.sh: transmission/
+      transmission-init: bin/
+
+  mdns-publisher:
+    plugin: go
+    go-packages: [github.com/kyrofa/mdns-publisher]
+
+  delay-on-failure:
+    plugin: dump
+    source: src/delay-on-failure
+    organize:
+      delay-on-failure: bin/
+
+  wget:
+    plugin: nil
+    stage-packages:
+      - wget
+
+  p7zip:
+    plugin: dump
+    source: src/tools
+    organize:
+      p7zip: bin/
+    stage-packages:
+      - p7zip-full
+      - p7zip-rar
