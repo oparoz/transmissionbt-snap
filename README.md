@@ -62,6 +62,10 @@ Transmission can call a script each time a download is completed per example.
 The snap also provides a blocklist script which you can use to retrieve lists of IPs to block. 
 The URL and list of files to download are blank, letting you pick what's best for your use-case.
 
+You can find the script here:
+
+`/var/snap/transmissionbt/current/transmission/blocklists.sh`
+
 ## Files location
 
 Place your torrents files here:
