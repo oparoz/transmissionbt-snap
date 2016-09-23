@@ -41,7 +41,7 @@ You can optionally relax the apparmor policy by typing:
 
 ## How to use
 
-### We interface
+### Web interface
 
 Go with your browser to the URL of the device on which the snap was installed, but use port 9091.
 
@@ -70,11 +70,11 @@ Place your torrents files here:
 
 *Note: It is advised to symlink this folder to another area of the system with easier access if you're not using the snap on Ubuntu Core*
 
-The downloaded files are here:
+The downloaded files are placed here:
 
 `/var/snap/transmissionbt/common/downloads`
 
-Files still being downloaded are here:
+Files still being downloaded can be found here:
 
 `/var/snap/transmissionbt/common/incomplete`
 
