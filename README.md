@@ -39,6 +39,16 @@ This downloads the app from the Ubuntu app store
 
 `$ sudo snap install transmissionbt --beta --devmode`
 
+*Note: devmode is required because snapd doesn't offer yet the needed interface to confine this snap*
+
+The next step is to connect the Snap to you home and /media folders and to restart the service
+
+```bash
+$ snap connect transmissionbt:home ubuntu-core:home
+$ snap connect transmissionbt:removable-media ubuntu-core:removable-media
+$ sudo systemctl restart snap.transmissionbt.transmission-daemon
+```
+
 You can optionally relax the apparmor policy by typing:
 
 `$ sudo snap connect transmissionbt:mount-observe ubuntu-core:mount-observe`
@@ -83,29 +93,27 @@ You should see a high number of rules.
 
 Place your torrents files here:
 
-`/var/snap/transmissionbt/common/torrents`
-
-*Note: It is advised to symlink this folder to another area of the system with easier access if you're not using the snap on Ubuntu Core*
+`/media/transmissionbt/torrents`
 
 The downloaded files are placed here:
 
-`/var/snap/transmissionbt/common/downloads`
+`/media/transmissionbt/downloads`
 
 Files still being downloaded can be found here:
 
-`/var/snap/transmissionbt/common/incomplete`
+`/media/transmissionbt/incomplete`
 
 ## Creating torrents
 
 Create the torrent
 
 ```
-$ sudo transmissionbt.transmission-create -o ~/torrents/transmissionbt_1.0.1oparoz_amd64.snap.torrent -c "transmissionbt Snap for Ubuntu Snappy" -t udp://tracker.openbittorrent.com:80 -t udp://open.demonii.com:1337 -t udp://tracker.coppersurfer.tk:6969 -t udp://tracker.leechers-paradise.org:6969 ~/sharing/transmissionbt_1.0.1oparoz_amd64.snap
+$ sudo transmissionbt.transmission-create -o ~/torrents/transmissionbt_1.0.1oparoz_amd64.snap.torrent -c "transmissionbt Snap for Ubuntu Snappy" -t udp://tracker.openbittorrent.com:80 -t udp://open.demonii.com:1337 -t udp://tracker.coppersurfer.tk:6969 -t udp://tracker.leechers-paradise.org:6969 ~/mysnaps/transmissionbt_1.0.1oparoz_amd64.snap
 ```
 
 ### Explanations
 
-Torrent to create, including the full path to its location
+Path to the torrent to create, including the full path to its location
 
 `-o ~/torrents/transmissionbt_1.0.1oparoz_amd64.snap.torrent`
 
@@ -124,14 +132,14 @@ As many trackers as you want. Use more than one for redundancy
 
 File or directory to share
 
-`~/sharing/transmissionbt_1.0.1oparoz_amd64.snap`
+`~/mysnaps/transmissionbt_1.0.1oparoz_amd64.snap`
 
 ## Seeding
 
-Copy both the files/folder to your transmission download folder
+Copy the file/folder to your transmission download folder
 
 ```
-$ sudo cp ~/downloads/transmissionbt_1.0.1oparoz_amd64.snap /var/snap/transmissionbt/common/downloads/
+$ sudo cp ~/mysnaps/transmissionbt_1.0.1oparoz_amd64.snap /media/transmissionbt/downloads/
 ```
 
 Send the torrent file to transmission

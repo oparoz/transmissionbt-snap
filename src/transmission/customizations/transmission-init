@@ -73,8 +73,15 @@ BIN=$SNAP/bin/$NAME
 PIDFILE=$TRANSMISSION_HOME/$NAME.pid
 LOGFILE=$TRANSMISSION_HOME/$NAME.log
 
+RW_TORRENTS=/media/transmissionbt/torrents
+RW_INCOMPLETE=/media/transmissionbt/incomplete
+RW_DOWNLOADS=/media/transmissionbt/downloads
+RW_TORRENTS_OLD=$SNAP_COMMON/torrents
+RW_INCOMPLETE_OLD=$SNAP_COMMON/incomplete
+RW_DOWNLOADS_OLD=$SNAP_COMMON/downloads
+
 # As a daemon
-OPTS="--blocklist --pid-file $PIDFILE --logfile $LOGFILE --download-dir $SNAP_COMMON/downloads --incomplete-dir $SNAP_COMMON/incomplete --watch-dir $SNAP_COMMON/torrents"
+OPTS="--blocklist --pid-file $PIDFILE --logfile $LOGFILE --download-dir $RW_DOWNLOADS --incomplete-dir $RW_INCOMPLETE --watch-dir $RW_TORRENTS"
 
 create_filesystem() {
 	if [ -d $TRANSMISSION_HOME ]; then
@@ -90,14 +97,24 @@ create_filesystem() {
 		#chown :ubuntu $RW_SETTINGS
 	fi
 
-	if [ ! -d $SNAP_COMMON/torrents ]; then
+	# This currently works well because we're unconfined, but it will break in the future and
+	# will require to wait for the user to connect the plugs and slots
+	if [ ! -d $RW_TORRENTS ]; then
 		echo "Creating media folders"
-		mkdir -p -m 770 $SNAP_COMMON/torrents
+		mkdir -p -m 770 $RW_TORRENTS
 		#chown :ubuntu $SNAP_DATA/torrents
-		mkdir -p -m 770 $SNAP_COMMON/downloads
+		mkdir -p -m 770 $RW_DOWNLOADS
 		#chown :ubuntu $SNAP_DATA/downloads
-		mkdir -p -m 770 $SNAP_COMMON/incomplete
+		mkdir -p -m 770 $RW_INCOMPLETE
 		#chown :ubuntu $SNAP_DATA/incomplete
+
+		# Move data from old folders
+		mv $RW_TORRENTS_OLD/* $RW_TORRENTS/
+		mv $RW_INCOMPLETE_OLD/* $RW_INCOMPLETE/
+		mv $RW_DOWNLOADS_OLD/* $RW_DOWNLOADS/
+		rm -rf $RW_TORRENTS_OLD
+		rm -rf $RW_INCOMPLETE_OLD
+		rm -rf $RW_DOWNLOADS_OLD
 	fi
 }
 
